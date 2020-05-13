@@ -18,7 +18,8 @@
 #include <wx/drawobject.h>
 #include <wx/observable.h>
 
-enum AXIS_LOCATION {
+enum AXIS_LOCATION
+{
     AXIS_LEFT = 1,
     AXIS_RIGHT,
     AXIS_TOP,
@@ -65,6 +66,7 @@ class WXDLLIMPEXP_FREECHART Axis : public wxObject, public Observable<AxisObserv
 
     friend class Plot;
     friend class AxisShare;
+
 public:
     /**
      * Constructs new axis.
@@ -113,40 +115,40 @@ public:
      * axis label.
      * @param majorGridlinePen The pen to be used to draw major gridlines on this axis.
      */
-     void SetMajorGridlinePen(const wxPen& pen)
-     {
-         m_majorGridlinePen = pen;
-         FireAxisChanged();
-     }
-     
+    void SetMajorGridlinePen(const wxPen &pen)
+    {
+        m_majorGridlinePen = pen;
+        FireAxisChanged();
+    }
+
     /**
      * Sets the pen to be used for drawing minor gridlines. A minor gridline is a gridline that is associated with a minor 
      * axis label, i.e. any label that is not a major axis label.
      * @param minorGridlinePen The pen to be used to draw minor gridlines on this axis.
      */
-     void SetMinorGridlinePen(const wxPen& pen)
-     {
-         m_minorGridlinePen = pen;
-         FireAxisChanged();
-     }
-     
-     /**
+    void SetMinorGridlinePen(const wxPen &pen)
+    {
+        m_minorGridlinePen = pen;
+        FireAxisChanged();
+    }
+
+    /**
       * Gets the pen that is currently used to draw major gridlines on this axis.
       * @return The pen currently used to draw major gridlines.
       */
-     const wxPen& GetMajorGridlinePen()
-     {
-         return m_majorGridlinePen;
-     }
+    const wxPen &GetMajorGridlinePen()
+    {
+        return m_majorGridlinePen;
+    }
 
-     /**
+    /**
       * Gets the pen that is currently used to draw minor gridlines on this axis.
       * @return The pen currently used to draw minor gridlines.
       */
-     const wxPen& GetMinorGridlinePen()
-     {
-         return m_minorGridlinePen;
-     }
+    const wxPen &GetMinorGridlinePen()
+    {
+        return m_minorGridlinePen;
+    }
 
     //
     // Dataset functions.
@@ -215,9 +217,11 @@ public:
      */
     void SetUseWindow(bool useWin)
     {
-        if (m_useWin != useWin) {
+        if (m_useWin != useWin)
+        {
             m_useWin = useWin;
             FireAxisChanged();
+            FireBoundsChanged();
         }
     }
 
@@ -228,10 +232,12 @@ public:
      */
     void SetWindow(double winPos, double winWidth)
     {
-        if (m_winPos != winPos || m_winWidth != winWidth) {
+        if (m_winPos != winPos || m_winWidth != winWidth)
+        {
             m_winPos = winPos;
             m_winWidth = winWidth;
             FireAxisChanged();
+            FireBoundsChanged();
         }
     }
 
@@ -254,11 +260,13 @@ public:
         double minValue, maxValue;
         GetDataBounds(minValue, maxValue);
 
-        if (m_useWin) {
+        if (m_useWin)
+        {
             winMin = m_winPos;
             winMax = wxMin(maxValue, winMin + m_winWidth);
         }
-        else {
+        else
+        {
             winMin = minValue;
             winMax = maxValue;
         }
@@ -269,7 +277,8 @@ public:
      */
     void AddDataset(Dataset *dataset)
     {
-        if (AcceptDataset(dataset)) {
+        if (AcceptDataset(dataset))
+        {
             m_datasets.Add(dataset);
         }
     }
@@ -353,8 +362,8 @@ protected:
     virtual bool AcceptDataset(Dataset *dataset) = 0;
 
     DatasetArray m_datasets;
-	wxPen m_majorGridlinePen;
-	wxPen m_minorGridlinePen;
+    wxPen m_majorGridlinePen;
+    wxPen m_minorGridlinePen;
 
     wxCoord m_marginMin;
     wxCoord m_marginMax;
